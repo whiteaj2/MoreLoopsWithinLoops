@@ -3,8 +3,8 @@ This project demonstrates NESTED LOOPS (i.e., loops within loops)
 in the context of SEQUENCES OF SUB-SEQUENCES.
 
 Authors: David Mutchler, Valerie Galluzzi, Mark Hays, Amanda Stouder,
-         their colleagues and PUT_YOUR_NAME_HERE.
-"""  # TODO: 1. PUT YOUR NAME IN THE ABOVE LINE.
+         their colleagues and Andrew White.
+"""  # DONE: 1. PUT YOUR NAME IN THE ABOVE LINE.
 
 
 def main():
@@ -17,7 +17,7 @@ def main():
 def run_test_largest_number():
     """ Tests the    largest_number    function. """
     # ------------------------------------------------------------------
-    # TODO: 2. Implement this TEST function.
+    # DONE: 2. Implement this TEST function.
     #   It TESTS the  largest_number  function defined below.
     #   Include at least ** 1 ** ADDITIONAL test beyond those we wrote.
     # ------------------------------------------------------------------
@@ -44,6 +44,9 @@ def run_test_largest_number():
     print('Expected and actual are:', expected, answer)
 
     # TO DO 2 (continued): Add your ADDITIONAL test(s) here:
+    expected = 48
+    answer = largest_number(([24,32,17], [-2],[], [48]))
+    print('Expected and actual are:', expected, answer)
 
 
 def largest_number(seq_seq):
@@ -72,15 +75,37 @@ def largest_number(seq_seq):
     where each subsequence contains only numbers.
     """
     # ------------------------------------------------------------------
-    # TODO: 3. Implement and test this function.
+    # DONE: 3. Implement and test this function.
     #   Note that you should write its TEST function first (above).
     # ------------------------------------------------------------------
+    maxK = find_first_non_empty_seq(seq_seq)
+    maxJ = 0
+    if maxK != None:
+        for k in range(len(seq_seq)):
+            if (len(seq_seq[k]) > 0):
+                for j in range(len(seq_seq[k])):
+                    if seq_seq[k][j] > seq_seq[maxK][maxJ]:
+                        maxJ = j
+                        maxK = k
+    if maxK == 0 and maxJ == 0:
+        return None
+    elif maxK == None:
+        return None
+    else:
+        return seq_seq[maxK][maxJ]
+
+def find_first_non_empty_seq(seq_seq):
+    for k in range(len(seq_seq)):
+        if len(seq_seq[k]) > 0:
+            return k
+    return None
+
 
 
 def run_test_largest_negative_number():
     """ Tests the    largest_negative_number    function. """
     # ------------------------------------------------------------------
-    # TODO: 4. Implement this TEST function.
+    # DONE: 4. Implement this TEST function.
     #   It TESTS the  largest_negative_number  function defined below.
     #
     #   Include enough tests to give you confidence that your solution
@@ -90,7 +115,13 @@ def run_test_largest_negative_number():
     print('-------------------------------------------------')
     print('Testing the   LARGEST_NEGATIVE_NUMBER   function:')
     print('-------------------------------------------------')
+    expected = -4
+    answer = largest_negative_number([[24, 32, 17,-6], [-4], [], [48]])
+    print('Expected and actual are:', expected, answer)
 
+    expected = -2
+    answer = largest_negative_number([[], [-24,-3,0,8], [19,6,-2], [48,-3]])
+    print('Expected and actual are:', expected, answer)
 
 def largest_negative_number(seq_seq):
     """
@@ -115,13 +146,45 @@ def largest_negative_number(seq_seq):
     where each subsequence contains only numbers.
     """
     # ------------------------------------------------------------------
-    # TODO: 5. Implement and test this function.
+    # DONE: 5. Implement and test this function.
     #   Note that you should write its TEST function first (above).
     #
     # CHALLENGE: Try to solve this problem with no additional sequences
     #   being constructed (so the SPACE allowed is limited to the
     #   give sequence of sequences plus any non-list variables you want).
     # ------------------------------------------------------------------
+    check = find_first_negative(seq_seq)
+    maxK = 0
+    maxJ = 0
+    if check != None:
+        maxK = check[0]
+        maxJ = check[1]
+    else:
+        maxK = None
+        maxJ = None
+
+    if maxK != None:
+        for k in range(len(seq_seq)):
+            if (len(seq_seq[k]) > 0):
+                for j in range(len(seq_seq[k])):
+                    if seq_seq[k][j] > seq_seq[maxK][maxJ] and seq_seq[k][j] < 0:
+                        maxJ = j
+                        maxK = k
+    if maxK == 0 and maxJ == 0:
+        return None
+    elif maxK == None:
+        return None
+    else:
+        return seq_seq[maxK][maxJ]
+
+def find_first_negative(seq_seq):
+    #Returns the indicies of the first negative in list format
+    for k in range(len(seq_seq)):
+        if len(seq_seq[k]) > 0:
+            for j in range(len(seq_seq[k])):
+                if seq_seq[k][j] < 0:
+                    return [k,j]
+    return None
 
 
 def run_test_first_is_elsewhere_too():
@@ -355,7 +418,7 @@ def first_is_elsewhere_too(seq_seq):
     and the given argument is a sequence of sequences.
     """
     # ------------------------------------------------------------------
-    # TODO: 6. Implement and test this function.
+    # DONE: 6. Implement and test this function.
     #          Some tests are already written for you (above).
     #
     # IMPLEMENTATION RESTRICTION:
@@ -370,6 +433,18 @@ def first_is_elsewhere_too(seq_seq):
     #   in this problem, as doing so would defeat the goal of providing
     #   practice at loops within loops (within loops within ...)
     # ------------------------------------------------------------------
+    checkList = []
+    for k in range(len(seq_seq[0])):
+        checkList.append(seq_seq[0][k])
+
+    if len(checkList) != 0:
+        for k in range(len(seq_seq)):
+            if k != 0:
+                for j in range(len(seq_seq[k])):
+                    for i in range(len(checkList)):
+                        if seq_seq[k][j] == checkList[i]:
+                            return True
+    return False
 
 
 # ----------------------------------------------------------------------
